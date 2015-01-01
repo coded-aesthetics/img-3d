@@ -20,6 +20,7 @@
     var h = 362/2;
     var vertices = [];
     var colors = [];
+    var meshes = [];
 
     for (var i = 0; i < numVertices; i++) {
         var x = Math.random() * w;
@@ -29,6 +30,14 @@
     }
 
     var triangles = Delaunay.triangulate(vertices);
+
+    function triangleCenter(v) {
+        var x2 = v[0][0] + 1/2*(v[1][0]-v[0][0]);
+        var x1 = v[2][0];
+        var y2 = v[0][1] + 1/2*(v[1][1]-v[0][1]);
+        var y1 = v[2][1];
+        return [x1 + 2/3 * (x2 - x1), y1 + 2/3*(y2 - y1)];
+    }
 
     function init() {
 
@@ -46,7 +55,7 @@
         light.position.set( 1, 1, 1 );
         scene.add( light );
 
-        var texture1 = new THREE.ImageUtils.loadTexture( 'img/fraktak.png' );
+        var texture1 = new THREE.ImageUtils.loadTexture( 'img/earth-clouds-art.jpg' );
 
         // add box 1 - grey8 texture
         var material1 = new THREE.MeshPhongMaterial( { color: 0xffffff, map: texture1 } );
@@ -89,7 +98,9 @@
             vertices[triangles[i+2]].push(tri);
 
             tri.maxHeight = vertices[triangles[i]][2].position.y = Math.random() * 400;
+            tri.triangleCenter = triangleCenter([p1, p2, p3]);
 
+            meshes.push(tri);
         }
 
         // RENDERER
@@ -106,6 +117,7 @@
 
         document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
+        lastTime = new Date().getTime();
     }
 
     function onDocumentMouseMove(event) {
@@ -115,7 +127,13 @@
 
     }
 
+    var lastTime;
+    var timePassed = 0;
+
     function animate() {
+        var thisTime = new Date().getTime();
+        var deltaTime = thisTime - lastTime;
+        timePassed += deltaTime;
 
         requestAnimationFrame( animate );
 
@@ -123,19 +141,27 @@
             var p1 = vertices[triangles[i]];
             var p2 = vertices[triangles[i + 1]];
             var p3 = vertices[triangles[i + 2]];
-            p1[2].position.y = p1[2].maxHeight * mouseX / 800;
+            //p1[2].position.y = p1[2].maxHeight * mouseX / 800;
+
         }
 
+        var sinus = Math.sin(thisTime/1000);
+
+        for (var i = 0; i < meshes.length; i++) {
+            //meshes[i].position.y = meshes[i].triangleCenter[0]*Math.sin(thisTime/10)/10;// * sinus;
+            meshes[i].position.y = Math.sin((meshes[i].triangleCenter[0]+thisTime/40)/40)*10;// * sinus;
+
+        }
         render();
         stats.update();
-
+        lastTime = thisTime;
     }
 
     function render() {
 
         camera.position.x = 0;//+= ( mouseX - camera.position.x ) * .05;
-        camera.position.y = 400;// THREE.Math.clamp( camera.position.y + ( - ( mouseY - 200 ) - camera.position.y ) * .05, 50, 1000 );
-        camera.position.z = 400;
+        camera.position.y = 200;// THREE.Math.clamp( camera.position.y + ( - ( mouseY - 200 ) - camera.position.y ) * .05, 50, 1000 );
+        camera.position.z = 200;
 
         camera.lookAt( scene.position );
 
