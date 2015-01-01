@@ -1,0 +1,42 @@
+{
+    "browser": true,
+    "devel": true,
+    "jquery": true,
+
+    "globalstrict": true,
+    "latedef": true,
+    "asi": false,
+    "boss": false,
+    "eqeqeq": true,
+    "eqnull": true,
+    "evil": false,
+    "multistr": false,
+    "freeze": true,
+    "camelcase": true,
+    "newcap": true,
+    "indent": 4,
+    "curly": true,
+    "trailing": true,
+    "immed": true,
+    
+    "nonbsp": true,
+    "bitwise": true,
+    "noarg": true,
+    "noempty": true,
+    "undef": true,
+    "unused": true,
+    "strict": true,
+    "maxparams": 5,
+    "predef": [
+        "has",
+        "load",
+        "define",
+        "require",
+        "it",
+        "describe",
+        "assert",
+        "package",
+        "short",
+        "class"
+    ]
+}

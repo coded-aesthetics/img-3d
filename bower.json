@@ -1,0 +1,10 @@
+{
+    "name": "js-kickoff",
+    "main": "dist/js-kickoff.js",
+    "ignore": ["test", "src", "assets", "Gruntfile.js", ".jscsrc", ".gitignore", "karma.conf.js", "tag.bat", ".jshintrc"],
+    "devDependencies": {
+
+    },
+    "dependencies": {},
+    "private": true
+}
