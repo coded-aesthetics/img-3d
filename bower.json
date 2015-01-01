@@ -1,9 +1,10 @@
 {
-    "name": "js-kickoff",
-    "main": "dist/js-kickoff.js",
+    "name": "img-3d",
+    "main": "dist/img-3d.js",
     "ignore": ["test", "src", "assets", "Gruntfile.js", ".jscsrc", ".gitignore", "karma.conf.js", "tag.bat", ".jshintrc"],
     "devDependencies": {
-
+        "threejs": "*",
+        "delaunay-fast": "*"
     },
     "dependencies": {},
     "private": true

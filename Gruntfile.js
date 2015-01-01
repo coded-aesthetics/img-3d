@@ -23,7 +23,7 @@ module.exports = function(grunt) {
                 options: {
                     banner: "<%= meta.banner %>"
                 },
-                src: ["src/**/*.js"],
+                src: ["lib/delaunay-fast/delaunay.js", "threejs/build/three.js", "threejs/Detector.js", "threejs/stats.js", "src/**/*.js", "src/*.js"],
                 dest: "dist/<%= pkg.name %>.js"
             }
         },
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
         delta: {
             all: {
                 files: ["Gruntfile.js", "src/**/*.js", "test/*.js"],
-                tasks: ["karma:continuous", "concat", "uglify"]
+                tasks: [/*"karma:continuous",*/ "concat",/* "uglify"*/]
             }
         },
         connect: {
@@ -84,6 +84,6 @@ module.exports = function(grunt) {
     grunt.renameTask("watch", "delta");
     grunt.registerTask("watch", ["build", "delta"]);
     grunt.registerTask("default", ["connect", "watch"]);
-    grunt.registerTask("build", ["clean", "concat", "uglify", "test"]);
-    grunt.registerTask('test', ['jshint', 'jscs', 'karma:continuous']);
+    grunt.registerTask("build", ["clean", "concat"/* "uglify" , "test"*/]);
+    grunt.registerTask('test', [/*'jshint', 'jscs',*/ 'karma:continuous']);
 }; 
