@@ -15,7 +15,7 @@
 
     var triangles;
 
-    var numVertices = 300;
+    var numVertices = 3000;
     var w = 598/2;
     var h = 362/2;
     var vertices = [];
@@ -87,6 +87,9 @@
             vertices[triangles[i]].push(tri);
             vertices[triangles[i+1]].push(tri);
             vertices[triangles[i+2]].push(tri);
+
+            tri.maxHeight = vertices[triangles[i]][2].position.y = Math.random() * 400;
+
         }
 
         // RENDERER
@@ -112,16 +115,15 @@
 
     }
 
-
     function animate() {
 
         requestAnimationFrame( animate );
 
-        for (var i = 0; i < triangles.length; i+= 3) {
+        for (var i = 0; i < triangles.length; i += 3) {
             var p1 = vertices[triangles[i]];
             var p2 = vertices[triangles[i + 1]];
             var p3 = vertices[triangles[i + 2]];
-            p1[2].position.y += Math.random();
+            p1[2].position.y = p1[2].maxHeight * mouseX / 800;
         }
 
         render();
