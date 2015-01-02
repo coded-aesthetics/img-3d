@@ -76,9 +76,9 @@
             var tri = new THREE.Mesh(geom, new THREE.MeshPhongMaterial({ color: 0xffffff, map: texture1 }));
             tri.triangleCenter = triangleCenter([p1, p2, p3]);
 
-            geom.vertices.push(new THREE.Vector3(p1[0]-tri.triangleCenter[0], 0, p1[1]-tri.triangleCenter[0]));
-            geom.vertices.push(new THREE.Vector3(p2[0]-tri.triangleCenter[0], 0, p2[1]-tri.triangleCenter[0]));
-            geom.vertices.push(new THREE.Vector3(p3[0]-tri.triangleCenter[0], 0, p3[1]-tri.triangleCenter[0]));
+            geom.vertices.push(new THREE.Vector3(-(p1[0]-tri.triangleCenter[0]), 0, -(p1[1]-tri.triangleCenter[0])));
+            geom.vertices.push(new THREE.Vector3(p2[0], 0, p2[1]));
+            geom.vertices.push(new THREE.Vector3(-(p3[0]-tri.triangleCenter[0]), 0, -(p3[1]-tri.triangleCenter[0])));
 
             var face = new THREE.Face3(1, 2, 0);
             face.normal.set(0, 0, 1); // normal
@@ -113,7 +113,7 @@
             tri.rotSpeed = 5;
             tri.rot = 0;
             tri.dummy = dummy;
-            
+
             meshes.push(tri);
         }
 
@@ -219,9 +219,9 @@
 
             var euler = new THREE.Euler( meshes[i].rot, 0, 0, 'XYZ' );
             //meshes[i].position.applyEuler(euler);
-            meshes[i].geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0, -y ) );
-            rotateAroundWorldAxis(meshes[i], axis2,mouseX / 400);
-            meshes[i].geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0, y ) );
+            //meshes[i].geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0, -y ) );
+            //rotateAroundWorldAxis(meshes[i], axis,mouseX / 400);
+            //meshes[i].geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0, y ) );
             meshes[i].rot = mouseX / 400;
             //meshes[i].rotateOnAxis(axis,);
         }
