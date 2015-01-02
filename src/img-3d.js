@@ -149,7 +149,15 @@
 
         for (var i = 0; i < meshes.length; i++) {
             //meshes[i].position.y = meshes[i].triangleCenter[0]*Math.sin(thisTime/10)/10;// * sinus;
-            meshes[i].position.y = Math.sin((meshes[i].triangleCenter[0]+thisTime/40)/40)*10;// * sinus;
+            var x = meshes[i].triangleCenter[0];
+            var y = meshes[i].triangleCenter[1];
+
+            meshes[i].position.y = Math.sin((x+thisTime/40)/40)*10
+            + Math.cos((y+thisTime/50)/15)*1.5
+            + Math.cos((x+thisTime/20)/40)*3
+                + Math.sin((y+thisTime/37)/27)*2.5
+                + Math.cos((x+(200+thisTime)/11)/80)*4
+                + Math.sin((y+3.9+thisTime/61)/12)*1;// * sinus;
 
         }
         render();
