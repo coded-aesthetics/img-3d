@@ -35147,6 +35147,7 @@ var Stats=function(){var l=Date.now(),m=l,g=0,n=Infinity,o=0,h=0,p=Infinity,q=0,
             tri.maxHeight = vertices[triangles[i]][2].position.y = Math.random() * 400;
             tri.triangleCenter = triangleCenter([p1, p2, p3]);
             tri.rotSpeed = 5;
+            tri.rot = 0;
             meshes.push(tri);
         }
 
@@ -35246,9 +35247,16 @@ var Stats=function(){var l=Date.now(),m=l,g=0,n=Infinity,o=0,h=0,p=Infinity,q=0,
                 + Math.cos((x+(200+thisTime)/11)/80)*4
                 + Math.sin((y+3.9+thisTime/61)/12)*1;// * sinus;
 
-            var axis = new THREE.Vector3(x,0,y);//tilted a bit on x and y - feel free to plug your different axis here
+            var axis2 = new THREE.Vector3(x,0,y);//tilted a bit on x and y - feel free to plug your different axis here
 //in your update/draw function
-            rotateAroundWorldAxis(meshes[i], axis, timePassed*meshes[i].rotSpeed/10000);
+            var axis = new THREE.Vector3(1,0,0);
+
+            var euler = new THREE.Euler( meshes[i].rot, 0, 0, 'XYZ' );
+            //meshes[i].position.applyEuler(euler);
+            meshes[i].geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0, -y ) );
+            rotateAroundObjectAxis(meshes[i], axis2,mouseX / 400);
+            meshes[i].geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0, y ) );
+            meshes[i].rot = mouseX / 400;
             //meshes[i].rotateOnAxis(axis,);
         }
         render();
