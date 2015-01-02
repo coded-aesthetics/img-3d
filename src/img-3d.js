@@ -73,9 +73,12 @@
             var p2 = vertices[triangles[i+1]];
             var p3 = vertices[triangles[i+2]];
 
-            geom.vertices.push(new THREE.Vector3(p1[0], 0, p1[1]));
-            geom.vertices.push(new THREE.Vector3(p2[0], 0, p2[1]));
-            geom.vertices.push(new THREE.Vector3(p3[0], 0, p3[1]));
+            var tri = new THREE.Mesh(geom, new THREE.MeshPhongMaterial({ color: 0xffffff, map: texture1 }));
+            tri.triangleCenter = triangleCenter([p1, p2, p3]);
+
+            geom.vertices.push(new THREE.Vector3(p1[0]-tri.triangleCenter[0], 0, p1[1]-tri.triangleCenter[0]));
+            geom.vertices.push(new THREE.Vector3(p2[0]-tri.triangleCenter[0], 0, p2[1]-tri.triangleCenter[0]));
+            geom.vertices.push(new THREE.Vector3(p3[0]-tri.triangleCenter[0], 0, p3[1]-tri.triangleCenter[0]));
 
             var face = new THREE.Face3(1, 2, 0);
             face.normal.set(0, 0, 1); // normal
@@ -87,20 +90,30 @@
             geom.faces.push(face);
             geom.faceVertexUvs[0].push([new THREE.Vector2(p1[0]/w, p1[1]/h), new THREE.Vector2(p3[0]/w, p3[1]/h), new THREE.Vector2(p2[0]/w, p2[1]/h)]); // uvs
 
-            var tri = new THREE.Mesh(geom, new THREE.MeshPhongMaterial({ color: 0xffffff, map: texture1 }));
+
             tri.doubleSided = true;
-            tri.position.x -= w/2;
-            tri.position.z -= h/2;
-            scene.add(tri);
+
+
+            var dummy = new THREE.Object3D();
+            dummy.position.x = tri.triangleCenter[0];
+            dummy.position.z = tri.triangleCenter[1];
+            dummy.position.x -= w/2;
+            dummy.position.z -= h/2;
+            scene.add( dummy );
+
+
+            dummy.add(tri);
 
             vertices[triangles[i]].push(tri);
             vertices[triangles[i+1]].push(tri);
             vertices[triangles[i+2]].push(tri);
 
             tri.maxHeight = vertices[triangles[i]][2].position.y = Math.random() * 400;
-            tri.triangleCenter = triangleCenter([p1, p2, p3]);
+
             tri.rotSpeed = 5;
             tri.rot = 0;
+            tri.dummy = dummy;
+            
             meshes.push(tri);
         }
 
@@ -207,7 +220,7 @@
             var euler = new THREE.Euler( meshes[i].rot, 0, 0, 'XYZ' );
             //meshes[i].position.applyEuler(euler);
             meshes[i].geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0, -y ) );
-            rotateAroundObjectAxis(meshes[i], axis2,mouseX / 400);
+            rotateAroundWorldAxis(meshes[i], axis2,mouseX / 400);
             meshes[i].geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0, y ) );
             meshes[i].rot = mouseX / 400;
             //meshes[i].rotateOnAxis(axis,);
