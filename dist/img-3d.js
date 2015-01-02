@@ -35174,6 +35174,46 @@ var Stats=function(){var l=Date.now(),m=l,g=0,n=Infinity,o=0,h=0,p=Infinity,q=0,
 
     }
 
+    // Rotate an object around an arbitrary axis in object space
+    var rotObjectMatrix;
+    function rotateAroundObjectAxis(object, axis, radians) {
+        rotObjectMatrix = new THREE.Matrix4();
+        rotObjectMatrix.makeRotationAxis(axis.normalize(), radians);
+
+        // old code for Three.JS pre r54:
+        // object.matrix.multiplySelf(rotObjectMatrix);      // post-multiply
+        // new code for Three.JS r55+:
+        object.matrix.multiply(rotObjectMatrix);
+
+        // old code for Three.js pre r49:
+        // object.rotation.getRotationFromMatrix(object.matrix, object.scale);
+        // old code for Three.js r50-r58:
+        // object.rotation.setEulerFromRotationMatrix(object.matrix);
+        // new code for Three.js r59+:
+        object.rotation.setFromRotationMatrix(object.matrix);
+    }
+
+    var rotWorldMatrix;
+// Rotate an object around an arbitrary axis in world space
+    function rotateAroundWorldAxis(object, axis, radians) {
+        rotWorldMatrix = new THREE.Matrix4();
+        rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
+
+        // old code for Three.JS pre r54:
+        //  rotWorldMatrix.multiply(object.matrix);
+        // new code for Three.JS r55+:
+        rotWorldMatrix.multiply(object.matrix);                // pre-multiply
+
+        object.matrix = rotWorldMatrix;
+
+        // old code for Three.js pre r49:
+        // object.rotation.getRotationFromMatrix(object.matrix, object.scale);
+        // old code for Three.js pre r59:
+        // object.rotation.setEulerFromRotationMatrix(object.matrix);
+        // code for r59+:
+        object.rotation.setFromRotationMatrix(object.matrix);
+    }
+
     var lastTime;
     var timePassed = 0;
 
@@ -35206,8 +35246,10 @@ var Stats=function(){var l=Date.now(),m=l,g=0,n=Infinity,o=0,h=0,p=Infinity,q=0,
                 + Math.cos((x+(200+thisTime)/11)/80)*4
                 + Math.sin((y+3.9+thisTime/61)/12)*1;// * sinus;
 
-
-            meshes[i].rotation.z += timePassed / 1000 * meshes[i].rotSpeed;
+            var axis = new THREE.Vector3(x,0,y);//tilted a bit on x and y - feel free to plug your different axis here
+//in your update/draw function
+            rotateAroundWorldAxis(meshes[i], axis, timePassed*meshes[i].rotSpeed/10000);
+            //meshes[i].rotateOnAxis(axis,);
         }
         render();
         stats.update();
