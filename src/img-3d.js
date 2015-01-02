@@ -76,9 +76,9 @@
             var tri = new THREE.Mesh(geom, new THREE.MeshPhongMaterial({ color: 0xffffff, map: texture1 }));
             tri.triangleCenter = triangleCenter([p1, p2, p3]);
 
-            geom.vertices.push(new THREE.Vector3(-(p1[0]-tri.triangleCenter[0]), 0, -(p1[1]-tri.triangleCenter[0])));
-            geom.vertices.push(new THREE.Vector3(p2[0], 0, p2[1]));
-            geom.vertices.push(new THREE.Vector3(-(p3[0]-tri.triangleCenter[0]), 0, -(p3[1]-tri.triangleCenter[0])));
+            geom.vertices.push(new THREE.Vector3(p1[0]-tri.triangleCenter[0], 0, p1[1]-tri.triangleCenter[1]));
+            geom.vertices.push(new THREE.Vector3(p2[0]-tri.triangleCenter[0], 0, p2[1]-tri.triangleCenter[1]));
+            geom.vertices.push(new THREE.Vector3(p3[0]-tri.triangleCenter[0], 0, p3[1]-tri.triangleCenter[1]));
 
             var face = new THREE.Face3(1, 2, 0);
             face.normal.set(0, 0, 1); // normal
@@ -90,9 +90,7 @@
             geom.faces.push(face);
             geom.faceVertexUvs[0].push([new THREE.Vector2(p1[0]/w, p1[1]/h), new THREE.Vector2(p3[0]/w, p3[1]/h), new THREE.Vector2(p2[0]/w, p2[1]/h)]); // uvs
 
-
             tri.doubleSided = true;
-
 
             var dummy = new THREE.Object3D();
             dummy.position.x = tri.triangleCenter[0];
@@ -100,7 +98,6 @@
             dummy.position.x -= w/2;
             dummy.position.z -= h/2;
             scene.add( dummy );
-
 
             dummy.add(tri);
 
@@ -110,9 +107,12 @@
 
             tri.maxHeight = vertices[triangles[i]][2].position.y = Math.random() * 400;
 
-            tri.rotSpeed = 5;
+            tri.speed = Math.random() * 5;
             tri.rot = 0;
             tri.dummy = dummy;
+            tri.trans = 0;
+
+            tri.direc = new THREE.Vector3(Math.random(),Math.random(),Math.random());
 
             meshes.push(tri);
         }
@@ -215,15 +215,20 @@
 
             var axis2 = new THREE.Vector3(x,0,y);//tilted a bit on x and y - feel free to plug your different axis here
 //in your update/draw function
-            var axis = new THREE.Vector3(1,0,0);
+            var axis = new THREE.Vector3(0,1,0);
 
-            var euler = new THREE.Euler( meshes[i].rot, 0, 0, 'XYZ' );
+            //var euler = new THREE.Euler( meshes[i].rot, 0, 0, 'XYZ' );
             //meshes[i].position.applyEuler(euler);
             //meshes[i].geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0, -y ) );
-            rotateAroundWorldAxis(meshes[i], axis,mouseX / 400);
+            rotateAroundWorldAxis(meshes[i].dummy, axis,meshes[i].rot-mouseX / 50);
             //meshes[i].geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0, y ) );
-            meshes[i].rot = mouseX / 400;
+            meshes[i].rot = mouseX / 50;
             //meshes[i].rotateOnAxis(axis,);
+            /*meshes[i].dummy.position.x += meshes[i].direc.x * (meshes[i].trans-mouseX);
+            meshes[i].dummy.position.y += meshes[i].direc.y * (meshes[i].trans-mouseX);
+            meshes[i].dummy.position.z += meshes[i].direc.z * (meshes[i].trans-mouseX);
+*/
+            meshes[i].trans = mouseX;
         }
         render();
         stats.update();
