@@ -35062,7 +35062,7 @@ var Stats=function(){var l=Date.now(),m=l,g=0,n=Infinity,o=0,h=0,p=Infinity,q=0,
 
     var triangles;
 
-    var numVertices = 3000;
+    var numVertices = 500;
     var w = 598/2;
     var h = 362/2;
     var vertices = [];
@@ -35146,7 +35146,7 @@ var Stats=function(){var l=Date.now(),m=l,g=0,n=Infinity,o=0,h=0,p=Infinity,q=0,
 
             tri.maxHeight = vertices[triangles[i]][2].position.y = Math.random() * 400;
             tri.triangleCenter = triangleCenter([p1, p2, p3]);
-
+            tri.rotSpeed = 5;
             meshes.push(tri);
         }
 
@@ -35206,6 +35206,8 @@ var Stats=function(){var l=Date.now(),m=l,g=0,n=Infinity,o=0,h=0,p=Infinity,q=0,
                 + Math.cos((x+(200+thisTime)/11)/80)*4
                 + Math.sin((y+3.9+thisTime/61)/12)*1;// * sinus;
 
+
+            meshes[i].rotation.z += timePassed / 1000 * meshes[i].rotSpeed;
         }
         render();
         stats.update();
