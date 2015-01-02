@@ -220,7 +220,7 @@
             var euler = new THREE.Euler( meshes[i].rot, 0, 0, 'XYZ' );
             //meshes[i].position.applyEuler(euler);
             //meshes[i].geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0, -y ) );
-            //rotateAroundWorldAxis(meshes[i], axis,mouseX / 400);
+            rotateAroundWorldAxis(meshes[i], axis,mouseX / 400);
             //meshes[i].geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0, y ) );
             meshes[i].rot = mouseX / 400;
             //meshes[i].rotateOnAxis(axis,);

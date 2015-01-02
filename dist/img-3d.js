@@ -35267,7 +35267,7 @@ var Stats=function(){var l=Date.now(),m=l,g=0,n=Infinity,o=0,h=0,p=Infinity,q=0,
             var euler = new THREE.Euler( meshes[i].rot, 0, 0, 'XYZ' );
             //meshes[i].position.applyEuler(euler);
             //meshes[i].geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0, -y ) );
-            //rotateAroundWorldAxis(meshes[i], axis,mouseX / 400);
+            rotateAroundWorldAxis(meshes[i], axis,mouseX / 400);
             //meshes[i].geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0, y ) );
             meshes[i].rot = mouseX / 400;
             //meshes[i].rotateOnAxis(axis,);
